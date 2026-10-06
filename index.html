@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="YTSubSearcher — расширение Firefox для поиска видео из ваших подписок YouTube по дню, месяцу и году. Доступ только для чтения, локальный кэш на 6 часов.">
+  <meta name="theme-color" content="#f7f5ef">
+  <meta name="referrer" content="no-referrer">
+  <title>YTSubSearcher — видео из подписок по дате</title>
+
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f7f5ef;
+      --surface: #fffefa;
+      --ink: #1c2825;
+      --muted: #53615b;
+      --line: #dcded4;
+      --accent: #bb402c;
+      --green: #164d3b;
+      --wash: #e7eee5;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-padding-top: 24px; }
+    body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.65 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+    a { color: var(--green); text-underline-offset: 4px; }
+    a:hover { text-decoration-thickness: 2px; }
+    a:focus-visible { outline: 3px solid var(--accent); outline-offset: 5px; border-radius: 3px; }
+    svg { display: block; flex-shrink: 0; }
+    .wrap { width: min(1080px, calc(100% - 48px)); margin-inline: auto; }
+    .skip { position: absolute; top: -100px; left: 24px; padding: 10px 16px; background: var(--surface); z-index: 10; }
+    .skip:focus { top: 12px; }
+    header { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding-block: 25px; border-bottom: 1px solid var(--line); }
+    .brand { display: flex; align-items: center; gap: 10px; color: var(--ink); font-size: 18px; font-weight: 750; text-decoration: none; letter-spacing: -.4px; }
+    .brand-icon { color: var(--accent); }
+    nav { display: flex; flex-wrap: wrap; gap: 10px 22px; font-size: 14px; }
+    nav a { text-decoration: none; }
+    nav a:hover { text-decoration: underline; }
+    .hero { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); align-items: center; gap: 52px; padding-block: 76px; }
+    .eyebrow { margin: 0 0 18px; color: var(--accent); font-size: 12px; font-weight: 750; letter-spacing: 1.8px; text-transform: uppercase; }
+    h1 { max-width: 650px; margin: 0; font-size: clamp(36px, 4.7vw, 57px); line-height: 1.12; letter-spacing: -2px; font-weight: 750; text-wrap: balance; }
+    .lead { max-width: 590px; margin: 24px 0 0; color: var(--muted); font-size: 18px; }
+    .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
+    .button { display: inline-flex; align-items: center; justify-content: center; min-height: 46px; padding: 10px 18px; border: 1px solid var(--green); border-radius: 8px; background: var(--green); color: white; font-size: 14px; font-weight: 650; text-decoration: none; }
+    .button:hover { background: #103a2c; text-decoration: none; }
+    .button.secondary { background: transparent; color: var(--green); border-color: var(--line); }
+    .button.secondary:hover { background: var(--wash); }
+    .facts { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-top: 22px; color: var(--muted); font-size: 13px; }
+    .finder-card { padding: 28px; border: 1px solid var(--line); border-radius: 20px; background: var(--surface); box-shadow: 0 14px 38px #1c28250b; }
+    .card-top { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+    .card-tag { padding: 5px 10px; border-radius: 30px; background: var(--wash); color: var(--green); font-size: 12px; font-weight: 650; }
+    .card-title { margin: 26px 0 8px; font-size: 23px; line-height: 1.3; letter-spacing: -.6px; font-weight: 700; }
+    .card-description { margin: 0; color: var(--muted); font-size: 14px; }
+    .date-parts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-block: 23px; }
+    .date-part { padding: 12px 4px; border: 1px solid var(--line); border-radius: 9px; text-align: center; }
+    .date-part strong { display: block; font-size: 23px; letter-spacing: 1px; }
+    .date-part span { font-size: 11px; color: var(--muted); }
+    .card-bottom { padding-top: 17px; border-top: 1px solid var(--line); font-size: 13px; color: var(--muted); }
+    section { padding-block: 42px; border-top: 1px solid var(--line); }
+    h2 { margin: 0 0 22px; font-size: 29px; line-height: 1.25; letter-spacing: -.8px; text-wrap: balance; }
+    h3 { margin: 0 0 10px; font-size: 18px; line-height: 1.4; letter-spacing: -.3px; }
+    p { margin: 0 0 16px; }
+    p:last-child { margin-bottom: 0; }
+    .steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 26px; margin: 0; padding: 0; list-style: none; counter-reset: step; }
+    .steps li { counter-increment: step; }
+    .steps li::before { content: "0" counter(step); display: block; margin-bottom: 14px; color: var(--accent); font-size: 13px; font-weight: 750; letter-spacing: 1px; }
+    .steps p { color: var(--muted); font-size: 15px; }
+    .features { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+    .feature { padding: 23px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); }
+    .feature p { color: var(--muted); font-size: 15px; }
+    .notice { margin-top: 18px; padding: 17px 20px; border-left: 3px solid var(--accent); background: #f0e9dd; color: #504335; font-size: 14px; }
+    .two-column { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.7fr); gap: 42px; }
+    .two-column h2 { max-width: 300px; }
+    .text { max-width: 680px; color: var(--muted); }
+    .text strong { color: var(--ink); }
+    .contact-list { margin: 0; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 8px 20px; }
+    .contact-list dt { color: var(--muted); }
+    .contact-list dd { margin: 0; overflow-wrap: anywhere; }
+    .contact-note { margin-top: 16px; color: var(--muted); font-size: 14px; }
+    footer { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px 24px; padding-block: 24px; border-top: 1px solid var(--line); color: var(--muted); font-size: 13px; }
+    .footer-links { display: flex; flex-wrap: wrap; gap: 8px 18px; }
+    @media (max-width: 760px) {
+      .hero { grid-template-columns: minmax(0, 1fr); gap: 30px; padding-block: 44px; }
+      h1 { max-width: 590px; font-size: clamp(36px, 7vw, 50px); letter-spacing: -1.5px; }
+      .finder-card { max-width: 520px; }
+      .steps { grid-template-columns: minmax(0, 1fr); gap: 22px; }
+      .steps li::before { margin-bottom: 5px; }
+      .two-column { grid-template-columns: minmax(0, 1fr); gap: 0; }
+      .two-column h2 { max-width: none; }
+    }
+    @media (max-width: 480px) {
+      .wrap { width: calc(100% - 32px); }
+      header { align-items: flex-start; flex-direction: column; gap: 13px; padding-block: 18px; }
+      nav { gap: 8px 18px; font-size: 13px; }
+      .lead { font-size: 16px; }
+      .features { grid-template-columns: minmax(0, 1fr); }
+      .finder-card { padding: 22px; }
+      section { padding-block: 32px; }
+      h2 { font-size: 25px; }
+      .contact-list { grid-template-columns: minmax(0, 1fr); gap: 2px; }
+      .contact-list dd + dt { margin-top: 12px; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip" href="#main">Перейти к содержимому</a>
+  <div class="wrap">
+    <header>
+      <a class="brand" href="#main" aria-label="YTSubSearcher, главная">
+        <svg class="brand-icon" width="30" height="30" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+          <rect x="4" y="6" width="21" height="21" rx="5" stroke="currentColor" stroke-width="2"/>
+          <path d="M4 12h21M10 3v6M19 3v6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <circle cx="19" cy="21" r="4" fill="var(--bg)" stroke="currentColor" stroke-width="2"/>
+          <path d="m22 24 5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        YTSubSearcher
+      </a>
+      <nav aria-label="Навигация">
+        <a href="#how-it-works">Как пользоваться</a>
+        <a href="privacy.html">Конфиденциальность</a>
+        <a href="#contact">Контакты</a>
+      </nav>
+    </header>
+
+    <main id="main">
+      <div class="hero">
+        <div>
+          <p class="eyebrow">Расширение для Firefox</p>
+          <h1>Видео из ваших подписок по нужной дате.</h1>
+          <p class="lead">YTSubSearcher ищет публичные видео каналов, на которые подписан ваш аккаунт YouTube. Укажите день, месяц или год и получите подходящие ролики, начиная с самых новых.</p>
+          <div class="actions">
+            <a class="button" href="#how-it-works">Как работает поиск</a>
+            <a class="button secondary" href="privacy.html">Политика конфиденциальности</a>
+          </div>
+          <div class="facts" aria-label="Основные сведения">
+            <span>Firefox 140+ для компьютера</span>
+            <span>Доступ только для чтения</span>
+          </div>
+        </div>
+        <aside class="finder-card" aria-label="Принцип поиска по дате">
+          <div class="card-top">
+            <svg width="43" height="43" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+              <rect x="5" y="9" width="34" height="33" rx="7" stroke="var(--green)" stroke-width="2"/>
+              <path d="M5 18h34M15 5v9M29 5v9" stroke="var(--green)" stroke-width="2" stroke-linecap="round"/>
+              <circle cx="31" cy="33" r="7" fill="var(--surface)" stroke="var(--accent)" stroke-width="2.5"/>
+              <path d="m36 38 7 7" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round"/>
+            </svg>
+            <span class="card-tag">Только ваши подписки</span>
+          </div>
+          <p class="card-title">Один день. Целый месяц. Любой год.</p>
+          <p class="card-description">Заполните только те части даты, по которым хотите искать.</p>
+          <div class="date-parts" aria-label="Части даты: день, месяц, год">
+            <div class="date-part"><strong>ДД</strong><span>день</span></div>
+            <div class="date-part"><strong>ММ</strong><span>месяц</span></div>
+            <div class="date-part"><strong>ГГГГ</strong><span>год</span></div>
+          </div>
+          <p class="card-bottom">Поиск запускается из окна расширения по иконке в браузере.</p>
+        </aside>
+      </div>
+
+      <section id="how-it-works" aria-labelledby="how-title">
+        <h2 id="how-title">Три шага к нужным видео</h2>
+        <ol class="steps">
+          <li><h3>Войдите в Google</h3><p>Откройте расширение и выберите аккаунт, чьи подписки YouTube нужно проверить. Вход и согласие на доступ выполняются на стороне Google.</p></li>
+          <li><h3>Укажите дату</h3><p>Введите нужные день, месяц и год. Например, для поиска за месяц заполните месяц и год, оставив день пустым. Используется ваш местный часовой пояс.</p></li>
+          <li><h3>Запустите поиск</h3><p>Нажмите «Поиск». Расширение проверит каналы из подписок и покажет найденные видео. Каждый ролик можно открыть на YouTube.</p></li>
+        </ol>
+      </section>
+
+      <section aria-labelledby="features-title">
+        <h2 id="features-title">Удобно даже с большим списком подписок</h2>
+        <div class="features">
+          <article class="feature"><h3>Результаты сохраняются</h3><p>Закройте окно крестиком и вернитесь позже. Пока Firefox работает, закрытие окна не прерывает поиск. Найденные результаты хранятся локально до 6 часов.</p></article>
+          <article class="feature"><h3>Повторный поиск с кэшем</h3><p>Сведения о полностью проверенных каналах сохраняются на 6 часов. При повторном поиске расширение использует актуальный кэш, чтобы быстрее показать результат.</p></article>
+          <article class="feature"><h3>Поиск по длительности</h3><p>Выберите видео длиннее трёх минут, возможные Shorts продолжительностью до трёх минут или обе группы.</p></article>
+          <article class="feature"><h3>Управление в одном окне</h3><p>Остановите поиск, очистите дату и результаты, удалите кэш или смените Google аккаунт. Поиск также можно открыть в отдельной вкладке.</p></article>
+        </div>
+        <p class="notice"><strong>О группе «Возможные Shorts»:</strong> это оценка по длительности, а не точное определение формата. Короткие обычные видео тоже могут попасть в эту группу.</p>
+      </section>
+
+      <section class="two-column" aria-labelledby="access-title">
+        <h2 id="access-title">Зачем нужен доступ Google</h2>
+        <div class="text">
+          <p>Расширение использует <strong>YouTube Data API Services</strong>, чтобы получить подписки выбранного аккаунта и публичные сведения о видео этих каналов: название, дату публикации, длительность и миниатюру.</p>
+          <p>Разрешение YouTube предоставляется <strong>только для чтения</strong>. Оно нужно для поиска по вашим подпискам. Пароль вводится на странице Google; расширение его не получает и не изменяет ваши подписки или видео.</p>
+          <p>Отключить разрешение можно в <a href="https://myaccount.google.com/connections" target="_blank" rel="noopener noreferrer">настройках подключений Google аккаунта</a>.</p>
+        </div>
+      </section>
+
+      <section class="two-column" aria-labelledby="data-title">
+        <h2 id="data-title">Ваши данные</h2>
+        <div class="text">
+          <p>OAuth-токены, технический идентификатор аккаунта, кэш и результаты сохраняются <strong>в локальном профиле Firefox</strong>. Дата поиска и настройки фильтра обрабатываются на вашем устройстве.</p>
+          <p>Запросы авторизации, подписок, сведений о видео и миниатюр отправляются сервисам Google и YouTube. Данные не передаются на сервер разработчика. В расширении нет рекламы и аналитики.</p>
+          <p>«Удалить кэш» очищает кэш и результаты. «Выйти» дополнительно удаляет локальные токены, идентификатор аккаунта и настройки. Подробности о хранении, передаче и удалении данных доступны в <a href="privacy.html">политике конфиденциальности YTSubSearcher</a>.</p>
+        </div>
+      </section>
+
+      <section id="contact" class="two-column" aria-labelledby="contact-title">
+        <h2 id="contact-title">Связь с разработчиком</h2>
+        <div>
+          <dl class="contact-list">
+            <dt>Разработчик</dt><dd><a href="https://github.com/Suprastin0311">Suprastin0311</a></dd>
+            <dt>Email</dt><dd>dd.nikolaenko@gmail.com</dd>
+          </dl>
+          <p class="contact-note">Напишите, если у вас есть вопрос о расширении, обработке данных или найденной ошибке.</p>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <span>YTSubSearcher · Независимое расширение для Firefox</span>
+      <div class="footer-links">
+        <a href="privacy.html">Конфиденциальность</a>
+        <a href="https://www.youtube.com/t/terms" target="_blank" rel="noopener noreferrer">Условия YouTube</a>
+        <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">Конфиденциальность Google</a>
+      </div>
+    </footer>
+  </div>
+</body>
+</html>
