@@ -3,10 +3,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="YTSubSearcher — расширение Firefox для поиска видео из ваших подписок YouTube по дню, месяцу и году. Доступ только для чтения, локальный кэш на 6 часов.">
+  <meta name="description" content="YTSubSearcher — расширение Firefox для поиска видео из ваших подписок YouTube по дню, месяцу и году. Доступ только для чтения, локальный кэш на 6 часов." data-i18n-content="page.description">
   <meta name="theme-color" content="#f7f5ef">
   <meta name="referrer" content="no-referrer">
-  <title>YTSubSearcher — видео из подписок по дате</title>
+  <title data-i18n="page.title">YTSubSearcher — видео из подписок по дате</title>
 
   <style>
     :root {
@@ -25,7 +25,7 @@
     body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.65 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
     a { color: var(--green); text-underline-offset: 4px; }
     a:hover { text-decoration-thickness: 2px; }
-    a:focus-visible { outline: 3px solid var(--accent); outline-offset: 5px; border-radius: 3px; }
+    a:focus-visible, button:focus-visible { outline: 3px solid var(--accent); outline-offset: 5px; border-radius: 3px; }
     svg { display: block; flex-shrink: 0; }
     .wrap { width: min(1080px, calc(100% - 48px)); margin-inline: auto; }
     .skip { position: absolute; top: -100px; left: 24px; padding: 10px 16px; background: var(--surface); z-index: 10; }
@@ -100,122 +100,400 @@
       .contact-list { grid-template-columns: minmax(0, 1fr); gap: 2px; }
       .contact-list dd + dt { margin-top: 12px; }
     }
-  </style>
+  
+    /* Language switcher: wraps with navigation on smaller screens. */
+    header { flex-wrap: wrap; }
+    .header-controls { display: flex; align-items: center; justify-content: flex-end; flex-wrap: wrap; gap: 16px 24px; min-width: 0; }
+    .language-switcher { display: inline-flex; gap: 2px; padding: 4px; border: 1px solid var(--line); border-radius: 9px; background: var(--surface); flex-shrink: 0; }
+    .language-button { border: 0; border-radius: 5px; padding: 6px 10px; background: transparent; color: var(--muted); font: 650 12px/1.5 system-ui, sans-serif; cursor: pointer; }
+    .language-button:hover { background: var(--wash); color: var(--green); }
+    .language-button[aria-pressed="true"] { background: var(--green); color: white; }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); clip-path: inset(50%); white-space: nowrap; border: 0; }
+    @media (max-width: 760px) {
+      .header-controls { flex: 1 1 100%; justify-content: space-between; gap: 14px; }
+    }
+    @media (max-width: 480px) {
+      .header-controls { width: 100%; }
+      .language-button { padding-inline: 9px; }
+    }
+</style>
 </head>
 <body>
-  <a class="skip" href="#main">Перейти к содержимому</a>
+  <a class="skip" href="#main" data-i18n="skip">Перейти к содержимому</a>
   <div class="wrap">
     <header>
-      <a class="brand" href="#main" aria-label="YTSubSearcher, главная">
-        <svg class="brand-icon" width="30" height="30" viewBox="0 0 32 32" fill="none" aria-hidden="true">
-          <rect x="4" y="6" width="21" height="21" rx="5" stroke="currentColor" stroke-width="2"/>
-          <path d="M4 12h21M10 3v6M19 3v6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-          <circle cx="19" cy="21" r="4" fill="var(--bg)" stroke="currentColor" stroke-width="2"/>
-          <path d="m22 24 5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      <a class="brand" href="#main" aria-label="YTSubSearcher, главная" data-i18n-aria="brand.label">
+        <svg class="brand-icon" width="30" height="30" viewbox="0 0 32 32" fill="none" aria-hidden="true">
+          <rect x="4" y="6" width="21" height="21" rx="5" stroke="currentColor" stroke-width="2"></rect>
+          <path d="M4 12h21M10 3v6M19 3v6" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+          <circle cx="19" cy="21" r="4" fill="var(--bg)" stroke="currentColor" stroke-width="2"></circle>
+          <path d="m22 24 5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
         </svg>
         YTSubSearcher
       </a>
-      <nav aria-label="Навигация">
-        <a href="#how-it-works">Как пользоваться</a>
-        <a href="privacy.html">Конфиденциальность</a>
-        <a href="#contact">Контакты</a>
+      <div class="header-controls"><nav aria-label="Навигация" data-i18n-aria="nav.label">
+        <a href="#how-it-works" data-i18n="nav.how">Как пользоваться</a>
+        <a href="privacy.html" data-i18n="nav.privacy">Конфиденциальность</a>
+        <a href="#contact" data-i18n="nav.contact">Контакты</a>
       </nav>
-    </header>
+    <div class="language-switcher" role="group" aria-label="Выбор языка" data-i18n-aria="language.label"><button type="button" class="language-button" data-language="ru" lang="ru" aria-label="Русский" title="Русский" aria-pressed="true">RU</button><button type="button" class="language-button" data-language="en" lang="en" aria-label="English" title="English" aria-pressed="false">EN</button><button type="button" class="language-button" data-language="uk" lang="uk" aria-label="Українська" title="Українська" aria-pressed="false">UA</button><span class="sr-only" id="language-status" role="status" aria-live="polite" aria-atomic="true"></span></div></div></header>
 
     <main id="main">
       <div class="hero">
         <div>
-          <p class="eyebrow">Расширение для Firefox</p>
-          <h1>Видео из ваших подписок по нужной дате.</h1>
-          <p class="lead">YTSubSearcher ищет публичные видео каналов, на которые подписан ваш аккаунт YouTube. Укажите день, месяц или год и получите подходящие ролики, начиная с самых новых.</p>
+          <p class="eyebrow" data-i18n="hero.eyebrow">Расширение для Firefox</p>
+          <h1 data-i18n="hero.title">Видео из ваших подписок по нужной дате.</h1>
+          <p class="lead" data-i18n="hero.description">YTSubSearcher ищет публичные видео каналов, на которые подписан ваш аккаунт YouTube. Укажите день, месяц или год и получите подходящие ролики, начиная с самых новых.</p>
           <div class="actions">
-            <a class="button" href="#how-it-works">Как работает поиск</a>
-            <a class="button secondary" href="privacy.html">Политика конфиденциальности</a>
+            <a class="button" href="#how-it-works" data-i18n="hero.how">Как работает поиск</a>
+            <a class="button secondary" href="privacy.html" data-i18n="hero.privacy">Политика конфиденциальности</a>
           </div>
-          <div class="facts" aria-label="Основные сведения">
-            <span>Firefox 140+ для компьютера</span>
-            <span>Доступ только для чтения</span>
+          <div class="facts" aria-label="Основные сведения" data-i18n-aria="facts.label">
+            <span data-i18n="facts.browser">Firefox 140+ для компьютера</span>
+            <span data-i18n="facts.access">Доступ только для чтения</span>
           </div>
         </div>
-        <aside class="finder-card" aria-label="Принцип поиска по дате">
+        <aside class="finder-card" aria-label="Принцип поиска по дате" data-i18n-aria="card.label">
           <div class="card-top">
-            <svg width="43" height="43" viewBox="0 0 48 48" fill="none" aria-hidden="true">
-              <rect x="5" y="9" width="34" height="33" rx="7" stroke="var(--green)" stroke-width="2"/>
-              <path d="M5 18h34M15 5v9M29 5v9" stroke="var(--green)" stroke-width="2" stroke-linecap="round"/>
-              <circle cx="31" cy="33" r="7" fill="var(--surface)" stroke="var(--accent)" stroke-width="2.5"/>
-              <path d="m36 38 7 7" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round"/>
+            <svg width="43" height="43" viewbox="0 0 48 48" fill="none" aria-hidden="true">
+              <rect x="5" y="9" width="34" height="33" rx="7" stroke="var(--green)" stroke-width="2"></rect>
+              <path d="M5 18h34M15 5v9M29 5v9" stroke="var(--green)" stroke-width="2" stroke-linecap="round"></path>
+              <circle cx="31" cy="33" r="7" fill="var(--surface)" stroke="var(--accent)" stroke-width="2.5"></circle>
+              <path d="m36 38 7 7" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round"></path>
             </svg>
-            <span class="card-tag">Только ваши подписки</span>
+            <span class="card-tag" data-i18n="card.tag">Только ваши подписки</span>
           </div>
-          <p class="card-title">Один день. Целый месяц. Любой год.</p>
-          <p class="card-description">Заполните только те части даты, по которым хотите искать.</p>
-          <div class="date-parts" aria-label="Части даты: день, месяц, год">
-            <div class="date-part"><strong>ДД</strong><span>день</span></div>
-            <div class="date-part"><strong>ММ</strong><span>месяц</span></div>
-            <div class="date-part"><strong>ГГГГ</strong><span>год</span></div>
+          <p class="card-title" data-i18n="card.title">Один день. Целый месяц. Любой год.</p>
+          <p class="card-description" data-i18n="card.description">Заполните только те части даты, по которым хотите искать.</p>
+          <div class="date-parts" aria-label="Части даты: день, месяц, год" data-i18n-aria="date.label">
+            <div class="date-part"><strong data-i18n="date.dayFormat">ДД</strong><span data-i18n="date.day">день</span></div>
+            <div class="date-part"><strong data-i18n="date.monthFormat">ММ</strong><span data-i18n="date.month">месяц</span></div>
+            <div class="date-part"><strong data-i18n="date.yearFormat">ГГГГ</strong><span data-i18n="date.year">год</span></div>
           </div>
-          <p class="card-bottom">Поиск запускается из окна расширения по иконке в браузере.</p>
+          <p class="card-bottom" data-i18n="card.bottom">Поиск запускается из окна расширения по иконке в браузере.</p>
         </aside>
       </div>
 
       <section id="how-it-works" aria-labelledby="how-title">
-        <h2 id="how-title">Три шага к нужным видео</h2>
+        <h2 id="how-title" data-i18n="how.title">Три шага к нужным видео</h2>
         <ol class="steps">
-          <li><h3>Войдите в Google</h3><p>Откройте расширение и выберите аккаунт, чьи подписки YouTube нужно проверить. Вход и согласие на доступ выполняются на стороне Google.</p></li>
-          <li><h3>Укажите дату</h3><p>Введите нужные день, месяц и год. Например, для поиска за месяц заполните месяц и год, оставив день пустым. Используется ваш местный часовой пояс.</p></li>
-          <li><h3>Запустите поиск</h3><p>Нажмите «Поиск». Расширение проверит каналы из подписок и покажет найденные видео. Каждый ролик можно открыть на YouTube.</p></li>
+          <li><h3 data-i18n="how.signIn">Войдите в Google</h3><p data-i18n="how.signInText">Откройте расширение и выберите аккаунт, чьи подписки YouTube нужно проверить. Вход и согласие на доступ выполняются на стороне Google.</p></li>
+          <li><h3 data-i18n="how.date">Укажите дату</h3><p data-i18n="how.dateText">Введите нужные день, месяц и год. Например, для поиска за месяц заполните месяц и год, оставив день пустым. Используется ваш местный часовой пояс.</p></li>
+          <li><h3 data-i18n="how.search">Запустите поиск</h3><p data-i18n="how.searchText">Нажмите «Поиск». Расширение проверит каналы из подписок и покажет найденные видео. Каждый ролик можно открыть на YouTube.</p></li>
         </ol>
       </section>
 
       <section aria-labelledby="features-title">
-        <h2 id="features-title">Удобно даже с большим списком подписок</h2>
+        <h2 id="features-title" data-i18n="features.title">Удобно даже с большим списком подписок</h2>
         <div class="features">
-          <article class="feature"><h3>Результаты сохраняются</h3><p>Закройте окно крестиком и вернитесь позже. Пока Firefox работает, закрытие окна не прерывает поиск. Найденные результаты хранятся локально до 6 часов.</p></article>
-          <article class="feature"><h3>Повторный поиск с кэшем</h3><p>Сведения о полностью проверенных каналах сохраняются на 6 часов. При повторном поиске расширение использует актуальный кэш, чтобы быстрее показать результат.</p></article>
-          <article class="feature"><h3>Поиск по длительности</h3><p>Выберите видео длиннее трёх минут, возможные Shorts продолжительностью до трёх минут или обе группы.</p></article>
-          <article class="feature"><h3>Управление в одном окне</h3><p>Остановите поиск, очистите дату и результаты, удалите кэш или смените Google аккаунт. Поиск также можно открыть в отдельной вкладке.</p></article>
+          <article class="feature"><h3 data-i18n="features.saved">Результаты сохраняются</h3><p data-i18n="features.savedText">Закройте окно крестиком и вернитесь позже. Пока Firefox работает, закрытие окна не прерывает поиск. Найденные результаты хранятся локально до 6 часов.</p></article>
+          <article class="feature"><h3 data-i18n="features.cache">Повторный поиск с кэшем</h3><p data-i18n="features.cacheText">Сведения о полностью проверенных каналах сохраняются на 6 часов. При повторном поиске расширение использует актуальный кэш, чтобы быстрее показать результат.</p></article>
+          <article class="feature"><h3 data-i18n="features.duration">Поиск по длительности</h3><p data-i18n="features.durationText">Выберите видео длиннее трёх минут, возможные Shorts продолжительностью до трёх минут или обе группы.</p></article>
+          <article class="feature"><h3 data-i18n="features.controls">Управление в одном окне</h3><p data-i18n="features.controlsText">Остановите поиск, очистите дату и результаты, удалите кэш или смените Google аккаунт. Поиск также можно открыть в отдельной вкладке.</p></article>
         </div>
-        <p class="notice"><strong>О группе «Возможные Shorts»:</strong> это оценка по длительности, а не точное определение формата. Короткие обычные видео тоже могут попасть в эту группу.</p>
+        <p class="notice"><strong data-i18n="shorts.title">О группе «Возможные Shorts»:</strong><span data-i18n="shorts.text"> это оценка по длительности, а не точное определение формата. Короткие обычные видео тоже могут попасть в эту группу.</span></p>
       </section>
 
       <section class="two-column" aria-labelledby="access-title">
-        <h2 id="access-title">Зачем нужен доступ Google</h2>
+        <h2 id="access-title" data-i18n="access.title">Зачем нужен доступ Google</h2>
         <div class="text">
-          <p>Расширение использует <strong>YouTube Data API Services</strong>, чтобы получить подписки выбранного аккаунта и публичные сведения о видео этих каналов: название, дату публикации, длительность и миниатюру.</p>
-          <p>Разрешение YouTube предоставляется <strong>только для чтения</strong>. Оно нужно для поиска по вашим подпискам. Пароль вводится на странице Google; расширение его не получает и не изменяет ваши подписки или видео.</p>
-          <p>Отключить разрешение можно в <a href="https://myaccount.google.com/connections" target="_blank" rel="noopener noreferrer">настройках подключений Google аккаунта</a>.</p>
+          <p><span data-i18n="access.apiBefore">Расширение использует </span><strong>YouTube Data API Services</strong><span data-i18n="access.apiAfter">, чтобы получить подписки выбранного аккаунта и публичные сведения о видео этих каналов: название, дату публикации, длительность и миниатюру.</span></p>
+          <p><span data-i18n="access.readBefore">Разрешение YouTube предоставляется </span><strong data-i18n="access.readOnly">только для чтения</strong><span data-i18n="access.readAfter">. Оно нужно для поиска по вашим подпискам. Пароль вводится на странице Google; расширение его не получает и не изменяет ваши подписки или видео.</span></p>
+          <p><span data-i18n="access.revokeBefore">Отключить разрешение можно в </span><a href="https://myaccount.google.com/connections" target="_blank" rel="noopener noreferrer" data-i18n="access.connections">настройках подключений Google аккаунта</a>.</p>
         </div>
       </section>
 
       <section class="two-column" aria-labelledby="data-title">
-        <h2 id="data-title">Ваши данные</h2>
+        <h2 id="data-title" data-i18n="data.title">Ваши данные</h2>
         <div class="text">
-          <p>OAuth-токены, технический идентификатор аккаунта, кэш и результаты сохраняются <strong>в локальном профиле Firefox</strong>. Дата поиска и настройки фильтра обрабатываются на вашем устройстве.</p>
-          <p>Запросы авторизации, подписок, сведений о видео и миниатюр отправляются сервисам Google и YouTube. Данные не передаются на сервер разработчика. В расширении нет рекламы и аналитики.</p>
-          <p>«Удалить кэш» очищает кэш и результаты. «Выйти» дополнительно удаляет локальные токены, идентификатор аккаунта и настройки. Подробности о хранении, передаче и удалении данных доступны в <a href="privacy.html">политике конфиденциальности YTSubSearcher</a>.</p>
+          <p><span data-i18n="data.localBefore">OAuth-токены, технический идентификатор аккаунта, кэш и результаты сохраняются </span><strong data-i18n="data.localProfile">в локальном профиле Firefox</strong><span data-i18n="data.localAfter">. Дата поиска и настройки фильтра обрабатываются на вашем устройстве.</span></p>
+          <p data-i18n="data.requests">Запросы авторизации, подписок, сведений о видео и миниатюр отправляются сервисам Google и YouTube. Данные не передаются на сервер разработчика. В расширении нет рекламы и аналитики.</p>
+          <p><span data-i18n="data.deleteBefore">«Удалить кэш» очищает кэш и результаты. «Выйти» дополнительно удаляет локальные токены, идентификатор аккаунта и настройки. Подробности о хранении, передаче и удалении данных доступны в </span><a href="privacy.html" data-i18n="data.policy">политике конфиденциальности YTSubSearcher</a>.</p>
         </div>
       </section>
 
       <section id="contact" class="two-column" aria-labelledby="contact-title">
-        <h2 id="contact-title">Связь с разработчиком</h2>
+        <h2 id="contact-title" data-i18n="contact.title">Связь с разработчиком</h2>
         <div>
           <dl class="contact-list">
-            <dt>Разработчик</dt><dd><a href="https://github.com/Suprastin0311">Suprastin0311</a></dd>
-            <dt>Email</dt><dd>dd.nikolaenko@gmail.com</dd>
+            <dt data-i18n="contact.developer">Разработчик</dt><dd><a href="https://github.com/Suprastin0311">Suprastin0311</a></dd>
+            <dt data-i18n="contact.email">Email</dt><dd>dd.nikolaenko@gmail.com</dd>
           </dl>
-          <p class="contact-note">Напишите, если у вас есть вопрос о расширении, обработке данных или найденной ошибке.</p>
+          <p class="contact-note" data-i18n="contact.note">Напишите, если у вас есть вопрос о расширении, обработке данных или найденной ошибке.</p>
         </div>
       </section>
     </main>
 
     <footer>
-      <span>YTSubSearcher · Независимое расширение для Firefox</span>
+      <span data-i18n="footer.description">YTSubSearcher · Независимое расширение для Firefox</span>
       <div class="footer-links">
-        <a href="privacy.html">Конфиденциальность</a>
-        <a href="https://www.youtube.com/t/terms" target="_blank" rel="noopener noreferrer">Условия YouTube</a>
-        <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">Конфиденциальность Google</a>
+        <a href="privacy.html" data-i18n="footer.privacy">Конфиденциальность</a>
+        <a href="https://www.youtube.com/t/terms" target="_blank" rel="noopener noreferrer" data-i18n="footer.terms">Условия YouTube</a>
+        <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" data-i18n="footer.google">Конфиденциальность Google</a>
       </div>
     </footer>
   </div>
-</body>
+<script>
+    (() => {
+      "use strict";
+      const translations = {
+        "ru": {
+                "page.title": "YTSubSearcher — видео из подписок по дате",
+                "page.description": "YTSubSearcher — расширение Firefox для поиска видео из ваших подписок YouTube по дню, месяцу и году. Доступ только для чтения, локальный кэш на 6 часов.",
+                "skip": "Перейти к содержимому",
+                "brand.label": "YTSubSearcher, главная",
+                "nav.label": "Навигация",
+                "nav.how": "Как пользоваться",
+                "nav.privacy": "Конфиденциальность",
+                "nav.contact": "Контакты",
+                "hero.eyebrow": "Расширение для Firefox",
+                "hero.title": "Видео из ваших подписок по нужной дате.",
+                "hero.description": "YTSubSearcher ищет публичные видео каналов, на которые подписан ваш аккаунт YouTube. Укажите день, месяц или год и получите подходящие ролики, начиная с самых новых.",
+                "hero.how": "Как работает поиск",
+                "hero.privacy": "Политика конфиденциальности",
+                "facts.label": "Основные сведения",
+                "facts.browser": "Firefox 140+ для компьютера",
+                "facts.access": "Доступ только для чтения",
+                "card.label": "Принцип поиска по дате",
+                "card.tag": "Только ваши подписки",
+                "card.title": "Один день. Целый месяц. Любой год.",
+                "card.description": "Заполните только те части даты, по которым хотите искать.",
+                "date.label": "Части даты: день, месяц, год",
+                "date.dayFormat": "ДД",
+                "date.day": "день",
+                "date.monthFormat": "ММ",
+                "date.month": "месяц",
+                "date.yearFormat": "ГГГГ",
+                "date.year": "год",
+                "card.bottom": "Поиск запускается из окна расширения по иконке в браузере.",
+                "how.title": "Три шага к нужным видео",
+                "how.signIn": "Войдите в Google",
+                "how.signInText": "Откройте расширение и выберите аккаунт, чьи подписки YouTube нужно проверить. Вход и согласие на доступ выполняются на стороне Google.",
+                "how.date": "Укажите дату",
+                "how.dateText": "Введите нужные день, месяц и год. Например, для поиска за месяц заполните месяц и год, оставив день пустым. Используется ваш местный часовой пояс.",
+                "how.search": "Запустите поиск",
+                "how.searchText": "Нажмите «Поиск». Расширение проверит каналы из подписок и покажет найденные видео. Каждый ролик можно открыть на YouTube.",
+                "features.title": "Удобно даже с большим списком подписок",
+                "features.saved": "Результаты сохраняются",
+                "features.savedText": "Закройте окно крестиком и вернитесь позже. Пока Firefox работает, закрытие окна не прерывает поиск. Найденные результаты хранятся локально до 6 часов.",
+                "features.cache": "Повторный поиск с кэшем",
+                "features.cacheText": "Сведения о полностью проверенных каналах сохраняются на 6 часов. При повторном поиске расширение использует актуальный кэш, чтобы быстрее показать результат.",
+                "features.duration": "Поиск по длительности",
+                "features.durationText": "Выберите видео длиннее трёх минут, возможные Shorts продолжительностью до трёх минут или обе группы.",
+                "features.controls": "Управление в одном окне",
+                "features.controlsText": "Остановите поиск, очистите дату и результаты, удалите кэш или смените Google аккаунт. Поиск также можно открыть в отдельной вкладке.",
+                "shorts.title": "О группе «Возможные Shorts»:",
+                "shorts.text": " это оценка по длительности, а не точное определение формата. Короткие обычные видео тоже могут попасть в эту группу.",
+                "access.title": "Зачем нужен доступ Google",
+                "access.apiBefore": "Расширение использует ",
+                "access.apiAfter": ", чтобы получить подписки выбранного аккаунта и публичные сведения о видео этих каналов: название, дату публикации, длительность и миниатюру.",
+                "access.readBefore": "Разрешение YouTube предоставляется ",
+                "access.readOnly": "только для чтения",
+                "access.readAfter": ". Оно нужно для поиска по вашим подпискам. Пароль вводится на странице Google; расширение его не получает и не изменяет ваши подписки или видео.",
+                "access.revokeBefore": "Отключить разрешение можно в ",
+                "access.connections": "настройках подключений Google аккаунта",
+                "data.title": "Ваши данные",
+                "data.localBefore": "OAuth-токены, технический идентификатор аккаунта, кэш и результаты сохраняются ",
+                "data.localProfile": "в локальном профиле Firefox",
+                "data.localAfter": ". Дата поиска и настройки фильтра обрабатываются на вашем устройстве.",
+                "data.requests": "Запросы авторизации, подписок, сведений о видео и миниатюр отправляются сервисам Google и YouTube. Данные не передаются на сервер разработчика. В расширении нет рекламы и аналитики.",
+                "data.deleteBefore": "«Удалить кэш» очищает кэш и результаты. «Выйти» дополнительно удаляет локальные токены, идентификатор аккаунта и настройки. Подробности о хранении, передаче и удалении данных доступны в ",
+                "data.policy": "политике конфиденциальности YTSubSearcher",
+                "contact.title": "Связь с разработчиком",
+                "contact.developer": "Разработчик",
+                "contact.email": "Email",
+                "contact.note": "Напишите, если у вас есть вопрос о расширении, обработке данных или найденной ошибке.",
+                "footer.description": "YTSubSearcher · Независимое расширение для Firefox",
+                "footer.privacy": "Конфиденциальность",
+                "footer.terms": "Условия YouTube",
+                "footer.google": "Конфиденциальность Google",
+                "language.label": "Выбор языка",
+                "language.current": "Выбран русский язык"
+        },
+        "en": {
+                "page.title": "YTSubSearcher — subscription videos by date",
+                "page.description": "YTSubSearcher is a Firefox extension for finding videos from your YouTube subscriptions by day, month and year. Read-only access and a local cache lasting 6 hours.",
+                "skip": "Skip to content",
+                "brand.label": "YTSubSearcher, home",
+                "nav.label": "Navigation",
+                "nav.how": "How to use",
+                "nav.privacy": "Privacy",
+                "nav.contact": "Contact",
+                "hero.eyebrow": "Firefox extension",
+                "hero.title": "Videos from your subscriptions, by date.",
+                "hero.description": "YTSubSearcher finds public videos from channels your YouTube account subscribes to. Choose a day, month or year to see matching videos, with the newest first.",
+                "hero.how": "How search works",
+                "hero.privacy": "Privacy policy",
+                "facts.label": "Key information",
+                "facts.browser": "Firefox 140+ on desktop",
+                "facts.access": "Read-only access",
+                "card.label": "How searching by date works",
+                "card.tag": "Only your subscriptions",
+                "card.title": "One day. A whole month. Any year.",
+                "card.description": "Fill in only the parts of the date you want to search by.",
+                "date.label": "Date fields: day, month, year",
+                "date.dayFormat": "DD",
+                "date.day": "day",
+                "date.monthFormat": "MM",
+                "date.month": "month",
+                "date.yearFormat": "YYYY",
+                "date.year": "year",
+                "card.bottom": "Start a search from the extension window, opened with its browser toolbar icon.",
+                "how.title": "Three steps to the videos you need",
+                "how.signIn": "Sign in with Google",
+                "how.signInText": "Open the extension and choose the account whose YouTube subscriptions you want to search. Sign-in and permission approval take place on Google’s own pages.",
+                "how.date": "Choose a date",
+                "how.dateText": "Enter the day, month and year you need. To search an entire month, for example, enter the month and year and leave the day blank. Your local time zone is used.",
+                "how.search": "Start searching",
+                "how.searchText": "Click “Search”. The extension checks your subscribed channels and displays matching videos. You can open each video on YouTube.",
+                "features.title": "Works with large subscription lists, too",
+                "features.saved": "Your results are saved",
+                "features.savedText": "Close the window with the × button and come back later. While Firefox is running, closing the window does not stop the search. Results are stored locally for up to 6 hours.",
+                "features.cache": "Faster repeat searches",
+                "features.cacheText": "Information about fully scanned channels is cached for 6 hours. Repeat searches use the current cache to show results sooner.",
+                "features.duration": "Filter by duration",
+                "features.durationText": "Choose videos longer than three minutes, possible Shorts lasting up to three minutes, or both groups.",
+                "features.controls": "Controls in one window",
+                "features.controlsText": "Stop a search, clear the date and results, delete the cache or switch Google accounts. You can also open the search in a separate tab.",
+                "shorts.title": "About “Possible Shorts”:",
+                "shorts.text": " this is an estimate based on duration, not a definitive format classification. Short regular videos may appear in this group as well.",
+                "access.title": "Why Google access is needed",
+                "access.apiBefore": "The extension uses ",
+                "access.apiAfter": " to retrieve the selected account’s subscriptions and public information about those channels’ videos: title, publication date, duration and thumbnail.",
+                "access.readBefore": "YouTube access is ",
+                "access.readOnly": "read-only",
+                "access.readAfter": ". It is used to search your subscriptions. You enter your password on Google’s page; the extension never receives it and does not change your subscriptions or videos.",
+                "access.revokeBefore": "You can revoke access in your ",
+                "access.connections": "Google account’s connection settings",
+                "data.title": "Your data",
+                "data.localBefore": "OAuth tokens, a technical account identifier, cached data and results are stored ",
+                "data.localProfile": "locally in your Firefox profile",
+                "data.localAfter": ". Search dates and filter settings are processed on your device.",
+                "data.requests": "Requests for authorization, subscriptions, video information and thumbnails are sent to Google and YouTube services. Data is not sent to a developer-operated server. The extension contains no advertising or analytics.",
+                "data.deleteBefore": "“Clear cache” deletes cached data and results. “Sign out” also deletes local tokens, the account identifier and settings. Details about storage, sharing and deletion are available in the ",
+                "data.policy": "YTSubSearcher privacy policy",
+                "contact.title": "Contact the developer",
+                "contact.developer": "Developer",
+                "contact.email": "Email",
+                "contact.note": "Get in touch if you have a question about the extension, how it handles data, or a bug you have found.",
+                "footer.description": "YTSubSearcher · An independent Firefox extension",
+                "footer.privacy": "Privacy",
+                "footer.terms": "YouTube Terms of Service",
+                "footer.google": "Google Privacy Policy",
+                "language.label": "Language selection",
+                "language.current": "English selected"
+        },
+        "uk": {
+                "page.title": "YTSubSearcher — відео з підписок за датою",
+                "page.description": "YTSubSearcher — розширення Firefox для пошуку відео з ваших підписок YouTube за днем, місяцем і роком. Доступ лише для читання, локальний кеш на 6 годин.",
+                "skip": "Перейти до вмісту",
+                "brand.label": "YTSubSearcher, головна",
+                "nav.label": "Навігація",
+                "nav.how": "Як користуватися",
+                "nav.privacy": "Конфіденційність",
+                "nav.contact": "Контакти",
+                "hero.eyebrow": "Розширення для Firefox",
+                "hero.title": "Відео з ваших підписок за потрібною датою.",
+                "hero.description": "YTSubSearcher шукає публічні відео каналів, на які підписаний ваш обліковий запис YouTube. Укажіть день, місяць або рік та отримайте відповідні відео, починаючи з найновіших.",
+                "hero.how": "Як працює пошук",
+                "hero.privacy": "Політика конфіденційності",
+                "facts.label": "Основні відомості",
+                "facts.browser": "Firefox 140+ для комп’ютера",
+                "facts.access": "Доступ лише для читання",
+                "card.label": "Принцип пошуку за датою",
+                "card.tag": "Лише ваші підписки",
+                "card.title": "Один день. Цілий місяць. Будь-який рік.",
+                "card.description": "Заповніть лише ті частини дати, за якими хочете шукати.",
+                "date.label": "Частини дати: день, місяць, рік",
+                "date.dayFormat": "ДД",
+                "date.day": "день",
+                "date.monthFormat": "ММ",
+                "date.month": "місяць",
+                "date.yearFormat": "РРРР",
+                "date.year": "рік",
+                "card.bottom": "Пошук запускається з вікна розширення, яке відкривається натисканням його іконки в браузері.",
+                "how.title": "Три кроки до потрібних відео",
+                "how.signIn": "Увійдіть через Google",
+                "how.signInText": "Відкрийте розширення та виберіть обліковий запис, чиї підписки YouTube потрібно перевірити. Вхід і надання згоди на доступ відбуваються на сторінках Google.",
+                "how.date": "Укажіть дату",
+                "how.dateText": "Введіть потрібні день, місяць і рік. Наприклад, для пошуку за місяць заповніть місяць і рік, залишивши день порожнім. Використовується ваш місцевий часовий пояс.",
+                "how.search": "Запустіть пошук",
+                "how.searchText": "Натисніть «Пошук». Розширення перевірить канали з підписок і покаже знайдені відео. Кожне відео можна відкрити на YouTube.",
+                "features.title": "Зручно навіть із великим списком підписок",
+                "features.saved": "Результати зберігаються",
+                "features.savedText": "Закрийте вікно хрестиком і поверніться пізніше. Поки Firefox працює, закриття вікна не перериває пошук. Знайдені результати зберігаються локально до 6 годин.",
+                "features.cache": "Повторний пошук із кешем",
+                "features.cacheText": "Відомості про повністю перевірені канали зберігаються на 6 годин. Під час повторного пошуку розширення використовує актуальний кеш, щоб швидше показати результат.",
+                "features.duration": "Пошук за тривалістю",
+                "features.durationText": "Виберіть відео довші за три хвилини, можливі Shorts тривалістю до трьох хвилин або обидві групи.",
+                "features.controls": "Керування в одному вікні",
+                "features.controlsText": "Зупиніть пошук, очистьте дату й результати, видаліть кеш або змініть обліковий запис Google. Пошук також можна відкрити в окремій вкладці.",
+                "shorts.title": "Про групу «Можливі Shorts»:",
+                "shorts.text": " це оцінка за тривалістю, а не точне визначення формату. Короткі звичайні відео також можуть потрапити до цієї групи.",
+                "access.title": "Навіщо потрібен доступ Google",
+                "access.apiBefore": "Розширення використовує ",
+                "access.apiAfter": ", щоб отримати підписки вибраного облікового запису та публічні відомості про відео цих каналів: назву, дату публікації, тривалість і мініатюру.",
+                "access.readBefore": "Доступ до YouTube надається ",
+                "access.readOnly": "лише для читання",
+                "access.readAfter": ". Він потрібен для пошуку у ваших підписках. Пароль вводиться на сторінці Google; розширення його не отримує та не змінює ваші підписки чи відео.",
+                "access.revokeBefore": "Відкликати дозвіл можна в ",
+                "access.connections": "налаштуваннях підключень облікового запису Google",
+                "data.title": "Ваші дані",
+                "data.localBefore": "OAuth-токени, технічний ідентифікатор облікового запису, кеш і результати зберігаються ",
+                "data.localProfile": "локально у профілі Firefox",
+                "data.localAfter": ". Дата пошуку та налаштування фільтра обробляються на вашому пристрої.",
+                "data.requests": "Запити на авторизацію, отримання підписок, відомостей про відео й мініатюр надсилаються сервісам Google та YouTube. Дані не передаються на сервер розробника. У розширенні немає реклами чи аналітики.",
+                "data.deleteBefore": "«Видалити кеш» очищає кеш і результати. «Вийти» додатково видаляє локальні токени, ідентифікатор облікового запису та налаштування. Докладні відомості про зберігання, передавання й видалення даних доступні в ",
+                "data.policy": "політиці конфіденційності YTSubSearcher",
+                "contact.title": "Зв’язок із розробником",
+                "contact.developer": "Розробник",
+                "contact.email": "Електронна пошта",
+                "contact.note": "Напишіть, якщо у вас є запитання про розширення, обробку даних або виявлену помилку.",
+                "footer.description": "YTSubSearcher · Незалежне розширення для Firefox",
+                "footer.privacy": "Конфіденційність",
+                "footer.terms": "Умови використання YouTube",
+                "footer.google": "Політика конфіденційності Google",
+                "language.label": "Вибір мови",
+                "language.current": "Вибрано українську мову"
+        }
+};
+      const storageKey = "ytss-homepage-language";
+      const buttons = [...document.querySelectorAll("[data-language]")];
+      const hasLanguage = (language) => Object.hasOwn(translations, language);
+
+      function setLanguage(language, remember = false) {
+        if (!hasLanguage(language)) return;
+        const strings = translations[language];
+        document.documentElement.lang = language;
+        document.querySelectorAll("[data-i18n]").forEach((element) => {
+          element.textContent = strings[element.dataset.i18n];
+        });
+        document.querySelectorAll("[data-i18n-aria]").forEach((element) => {
+          element.setAttribute("aria-label", strings[element.dataset.i18nAria]);
+        });
+        document.querySelectorAll("[data-i18n-content]").forEach((element) => {
+          element.setAttribute("content", strings[element.dataset.i18nContent]);
+        });
+        buttons.forEach((button) => {
+          button.setAttribute("aria-pressed", String(button.dataset.language === language));
+        });
+        document.getElementById("language-status").textContent = strings["language.current"];
+        if (remember) {
+          try { localStorage.setItem(storageKey, language); } catch { /* Switching still works when storage is unavailable. */ }
+        }
+      }
+
+      let initialLanguage = "ru";
+      try {
+        const savedLanguage = localStorage.getItem(storageKey);
+        if (hasLanguage(savedLanguage)) initialLanguage = savedLanguage;
+      } catch { /* Keep the Russian default. */ }
+      const requestedLanguage = new URLSearchParams(location.search).get("lang");
+      if (hasLanguage(requestedLanguage)) initialLanguage = requestedLanguage;
+      setLanguage(initialLanguage);
+      buttons.forEach((button) => {
+        button.addEventListener("click", () => setLanguage(button.dataset.language, true));
+      });
+    })();
+</script></body>
 </html>

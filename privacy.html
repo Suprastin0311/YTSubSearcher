@@ -1,33 +1,365 @@
 <!doctype html>
-<html lang="ru">
-<head>
-  <meta charset="utf-8">
+<html lang="ru"><head><meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Конфиденциальность — YTSubSearcher</title>
-  <style>body{max-width:760px;margin:32px auto;padding:0 20px;font:16px/1.6 system-ui,sans-serif;color:#202020}h1{font-size:28px}h2{font-size:20px;margin-top:28px}a{color:#2457b3}</style>
-</head>
-<body class="privacy-page">
-  <main>
-    <h1>Конфиденциальность YTSubSearcher</h1>
-    <p>Обновлено: 3 октября 2026 года. YTSubSearcher ищет публичные видео каналов из подписок выбранного пользователем аккаунта YouTube. Расширение использует YouTube Data API Services.</p>
-    <h2>Доступ к данным</h2>
-    <p>При нажатии «Войти в Google» Google открывает собственное окно входа и согласия. Расширение получает OAuth-токены, технический идентификатор Google аккаунта, список подписок, название YouTube канала и публичные сведения о видео: идентификатор, название, канал, дату публикации, длительность и адрес миниатюры. Пароль Google расширение не получает.</p>
-    <p>Разрешение YouTube используется только для чтения. Расширение не подписывается на каналы, не публикует видео и не изменяет данные YouTube. Дата поиска и настройки фильтра обрабатываются локально.</p>
-    <h2>Передача данных</h2>
-    <p>Запросы авторизации отправляются Google, запросы подписок и сведений о видео — YouTube Data API, миниатюры загружаются с i.ytimg.com. С этими запросами Google получает обычные сетевые сведения, включая IP-адрес. На сервер разработчика данные не передаются. В расширении нет рекламы, аналитики или продажи пользовательских данных.</p>
-    <h2>Локальное хранение</h2>
-    <p>OAuth-токены и технический идентификатор аккаунта сохраняются в локальном хранилище расширения внутри профиля Firefox, чтобы не входить заново при каждом поиске. Они не синхронизируются расширением между устройствами. Не публикуйте и не передавайте резервную копию своего профиля браузера.</p>
-    <p>Кэш метаданных каналов, настройки поиска и результаты сохраняются локально. Срок актуальности кэша — 6 часов с завершения сканирования канала; результаты текущего поиска сохраняются до 6 часов с его завершения или последнего получения результатов. Просроченные записи удаляются при запуске расширения, перед поиском и примерно раз в минуту, пока Firefox работает. Если Firefox закрыт или устройство спит, удаление выполняется после возобновления работы. Изменение фильтра не продлевает хранение прежних результатов.</p>
-    <h2>Удаление и отключение доступа</h2>
-    <p>«Очистить» очищает дату и результаты, «Удалить кэш» удаляет локальный кэш и результаты без выхода из Google. «Выйти» удаляет локальные токены, идентификатор аккаунта, кэш, настройки и результаты. Эти действия не удаляют подписки или видео на YouTube.</p>
-    <p>Чтобы отозвать разрешение Google, удалите доступ приложения в <a href="https://myaccount.google.com/connections" target="_blank" rel="noopener noreferrer">настройках подключений Google аккаунта</a>. После этого может потребоваться повторный вход. Удаление расширения удаляет его локальное хранилище.</p>
-    <h2>Использование данных Google</h2>
-    <p>Использование и передача информации, полученной из Google APIs, ограничены поиском видео из подписок и соответствуют Google API Services User Data Policy, включая требования Limited Use. Данные не используются для рекламы, оценки кредитоспособности или обучения универсальных моделей искусственного интеллекта.</p>
-    <h2>YouTube и короткие видео</h2>
-    <p>Источник видео и метаданных — YouTube. Группа «Возможные Shorts» означает ролики продолжительностью не более 3 минут, а не подтверждённый формат Shorts. Расширение не загружает страницы YouTube для автоматического определения формата и не встраивает видеоплеер.</p>
-    <p>Используя функции YouTube в расширении, вы также соглашаетесь с <a href="https://www.youtube.com/t/terms" target="_blank" rel="noopener noreferrer">Условиями использования YouTube</a>. Сведения о работе Google с данными доступны в <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">Политике конфиденциальности Google</a>.</p>
-    <h2>Связь с разработчиком</h2>
-    <p id="developer-contact"><a href="https://github.com/Suprastin0311">Suprastin0311</a>. Вопросы и запросы на удаление данных: dd.nikolaenko@gmail.com</p>
-  </main>
-</body>
-</html>
+  <meta name="theme-color" content="#f7f5ef">
+  <meta name="referrer" content="no-referrer">
+  <meta name="description" content="Политика конфиденциальности YTSubSearcher: доступ к данным Google и YouTube, локальное хранение, удаление данных и связь с разработчиком." data-i18n-content="page.description"><title data-i18n="page.title">Конфиденциальность — YTSubSearcher</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f7f5ef;
+      --surface: #fffefa;
+      --ink: #1c2825;
+      --muted: #53615b;
+      --line: #dcded4;
+      --accent: #bb402c;
+      --green: #164d3b;
+      --wash: #e7eee5;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-padding-top: 24px; }
+    body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.65 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+    a { color: var(--green); text-underline-offset: 4px; }
+    a:hover { text-decoration-thickness: 2px; }
+    a:focus-visible, button:focus-visible { outline: 3px solid var(--accent); outline-offset: 5px; border-radius: 3px; }
+    svg { display: block; flex-shrink: 0; }
+    .wrap { width: min(1080px, calc(100% - 48px)); margin-inline: auto; }
+    .skip { position: absolute; top: -100px; left: 24px; padding: 10px 16px; background: var(--surface); z-index: 10; }
+    .skip:focus { top: 12px; }
+    header { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding-block: 25px; border-bottom: 1px solid var(--line); }
+    .brand { display: flex; align-items: center; gap: 10px; color: var(--ink); font-size: 18px; font-weight: 750; text-decoration: none; letter-spacing: -.4px; }
+    .brand-icon { color: var(--accent); }
+    nav { display: flex; flex-wrap: wrap; gap: 10px 22px; font-size: 14px; }
+    nav a { text-decoration: none; }
+    nav a:hover { text-decoration: underline; }
+    .hero { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); align-items: center; gap: 52px; padding-block: 76px; }
+    .eyebrow { margin: 0 0 18px; color: var(--accent); font-size: 12px; font-weight: 750; letter-spacing: 1.8px; text-transform: uppercase; }
+    h1 { max-width: 650px; margin: 0; font-size: clamp(36px, 4.7vw, 57px); line-height: 1.12; letter-spacing: -2px; font-weight: 750; text-wrap: balance; }
+    .lead { max-width: 590px; margin: 24px 0 0; color: var(--muted); font-size: 18px; }
+    .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
+    .button { display: inline-flex; align-items: center; justify-content: center; min-height: 46px; padding: 10px 18px; border: 1px solid var(--green); border-radius: 8px; background: var(--green); color: white; font-size: 14px; font-weight: 650; text-decoration: none; }
+    .button:hover { background: #103a2c; text-decoration: none; }
+    .button.secondary { background: transparent; color: var(--green); border-color: var(--line); }
+    .button.secondary:hover { background: var(--wash); }
+    .facts { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-top: 22px; color: var(--muted); font-size: 13px; }
+    .finder-card { padding: 28px; border: 1px solid var(--line); border-radius: 20px; background: var(--surface); box-shadow: 0 14px 38px #1c28250b; }
+    .card-top { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+    .card-tag { padding: 5px 10px; border-radius: 30px; background: var(--wash); color: var(--green); font-size: 12px; font-weight: 650; }
+    .card-title { margin: 26px 0 8px; font-size: 23px; line-height: 1.3; letter-spacing: -.6px; font-weight: 700; }
+    .card-description { margin: 0; color: var(--muted); font-size: 14px; }
+    .date-parts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-block: 23px; }
+    .date-part { padding: 12px 4px; border: 1px solid var(--line); border-radius: 9px; text-align: center; }
+    .date-part strong { display: block; font-size: 23px; letter-spacing: 1px; }
+    .date-part span { font-size: 11px; color: var(--muted); }
+    .card-bottom { padding-top: 17px; border-top: 1px solid var(--line); font-size: 13px; color: var(--muted); }
+    section { padding-block: 42px; border-top: 1px solid var(--line); }
+    h2 { margin: 0 0 22px; font-size: 29px; line-height: 1.25; letter-spacing: -.8px; text-wrap: balance; }
+    h3 { margin: 0 0 10px; font-size: 18px; line-height: 1.4; letter-spacing: -.3px; }
+    p { margin: 0 0 16px; }
+    p:last-child { margin-bottom: 0; }
+    .steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 26px; margin: 0; padding: 0; list-style: none; counter-reset: step; }
+    .steps li { counter-increment: step; }
+    .steps li::before { content: "0" counter(step); display: block; margin-bottom: 14px; color: var(--accent); font-size: 13px; font-weight: 750; letter-spacing: 1px; }
+    .steps p { color: var(--muted); font-size: 15px; }
+    .features { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+    .feature { padding: 23px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); }
+    .feature p { color: var(--muted); font-size: 15px; }
+    .notice { margin-top: 18px; padding: 17px 20px; border-left: 3px solid var(--accent); background: #f0e9dd; color: #504335; font-size: 14px; }
+    .two-column { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.7fr); gap: 42px; }
+    .two-column h2 { max-width: 300px; }
+    .text { max-width: 680px; color: var(--muted); }
+    .text strong { color: var(--ink); }
+    .contact-list { margin: 0; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 8px 20px; }
+    .contact-list dt { color: var(--muted); }
+    .contact-list dd { margin: 0; overflow-wrap: anywhere; }
+    .contact-note { margin-top: 16px; color: var(--muted); font-size: 14px; }
+    footer { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px 24px; padding-block: 24px; border-top: 1px solid var(--line); color: var(--muted); font-size: 13px; }
+    .footer-links { display: flex; flex-wrap: wrap; gap: 8px 18px; }
+    @media (max-width: 760px) {
+      .hero { grid-template-columns: minmax(0, 1fr); gap: 30px; padding-block: 44px; }
+      h1 { max-width: 590px; font-size: clamp(36px, 7vw, 50px); letter-spacing: -1.5px; }
+      .finder-card { max-width: 520px; }
+      .steps { grid-template-columns: minmax(0, 1fr); gap: 22px; }
+      .steps li::before { margin-bottom: 5px; }
+      .two-column { grid-template-columns: minmax(0, 1fr); gap: 0; }
+      .two-column h2 { max-width: none; }
+    }
+    @media (max-width: 480px) {
+      .wrap { width: calc(100% - 32px); }
+      header { align-items: flex-start; flex-direction: column; gap: 13px; padding-block: 18px; }
+      nav { gap: 8px 18px; font-size: 13px; }
+      .lead { font-size: 16px; }
+      .features { grid-template-columns: minmax(0, 1fr); }
+      .finder-card { padding: 22px; }
+      section { padding-block: 32px; }
+      h2 { font-size: 25px; }
+      .contact-list { grid-template-columns: minmax(0, 1fr); gap: 2px; }
+      .contact-list dd + dt { margin-top: 12px; }
+    }
+  
+    /* Language switcher: wraps with navigation on smaller screens. */
+    header { flex-wrap: wrap; }
+    .header-controls { display: flex; align-items: center; justify-content: flex-end; flex-wrap: wrap; gap: 16px 24px; min-width: 0; }
+    .language-switcher { display: inline-flex; gap: 2px; padding: 4px; border: 1px solid var(--line); border-radius: 9px; background: var(--surface); flex-shrink: 0; }
+    .language-button { border: 0; border-radius: 5px; padding: 6px 10px; background: transparent; color: var(--muted); font: 650 12px/1.5 system-ui, sans-serif; cursor: pointer; }
+    .language-button:hover { background: var(--wash); color: var(--green); }
+    .language-button[aria-pressed="true"] { background: var(--green); color: white; }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); clip-path: inset(50%); white-space: nowrap; border: 0; }
+    @media (max-width: 760px) {
+      .header-controls { flex: 1 1 100%; justify-content: space-between; gap: 14px; }
+    }
+    @media (max-width: 480px) {
+      .header-controls { width: 100%; }
+      .language-button { padding-inline: 9px; }
+    }
+
+    /* Privacy page uses the same palette, typography and controls as the home page. */
+    .privacy-hero { padding-block: 52px 34px; }
+    .privacy-hero h1 { max-width: 880px; font-size: clamp(30px, 4.4vw, 48px); letter-spacing: -1.3px; overflow-wrap: anywhere; hyphens: auto; }
+    .policy-intro { max-width: 880px; margin-top: 22px; color: var(--muted); font-size: 17px; }
+    .policy-layout { display: grid; grid-template-columns: minmax(0, 1fr) 250px; gap: 48px; align-items: start; padding-bottom: 40px; }
+    .policy-content { grid-column: 1; grid-row: 1; min-width: 0; }
+    .policy-content section { padding-block: 28px; }
+    .policy-content h2 { font-size: 25px; margin-bottom: 17px; }
+    .policy-content p { color: var(--muted); overflow-wrap: anywhere; }
+    .policy-toc { grid-column: 2; grid-row: 1; position: sticky; top: 24px; padding: 23px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); }
+    .policy-toc h2 { font-size: 17px; letter-spacing: -.3px; margin-bottom: 16px; }
+    .policy-toc ul { margin: 0; padding: 0; list-style: none; }
+    .policy-toc li + li { margin-top: 12px; }
+    .policy-toc a { font-size: 14px; line-height: 1.4; text-decoration: none; }
+    .policy-toc a:hover { text-decoration: underline; }
+    nav a[aria-current="page"] { font-weight: 700; text-decoration: underline; }
+    @media (max-width: 900px) {
+      .policy-layout { grid-template-columns: minmax(0, 1fr); gap: 24px; }
+      .policy-toc { grid-column: 1; grid-row: 1; position: static; }
+      .policy-toc ul { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 20px; }
+      .policy-toc li + li { margin-top: 0; }
+      .policy-content { grid-column: 1; grid-row: 2; }
+    }
+    @media (max-width: 480px) {
+      .privacy-hero { padding-block: 34px 26px; }
+      .privacy-hero h1 { font-size: clamp(23px, 6.8vw, 30px); letter-spacing: -1px; }
+      .policy-intro { font-size: 16px; }
+      .policy-content h2 { font-size: 23px; }
+      .policy-toc { padding: 20px; }
+      .policy-toc ul { grid-template-columns: minmax(0, 1fr); }
+    }
+</style>
+</head><body class="privacy-page"><a class="skip" href="#main" data-i18n="skip">Перейти к содержимому</a>
+  <div class="wrap"><header>
+      <a class="brand" href="index.html" aria-label="YTSubSearcher, главная" data-i18n-aria="brand.label">
+        <svg class="brand-icon" width="30" height="30" viewbox="0 0 32 32" fill="none" aria-hidden="true">
+          <rect x="4" y="6" width="21" height="21" rx="5" stroke="currentColor" stroke-width="2"></rect>
+          <path d="M4 12h21M10 3v6M19 3v6" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+          <circle cx="19" cy="21" r="4" fill="var(--bg)" stroke="currentColor" stroke-width="2"></circle>
+          <path d="m22 24 5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+        </svg>
+        YTSubSearcher
+      </a>
+      <div class="header-controls"><nav aria-label="На этой странице" data-i18n-aria="nav.label">
+        <a href="index.html#how-it-works" data-i18n="nav.how">Как пользоваться</a>
+        <a href="privacy.html" data-i18n="nav.privacy" aria-current="page">Конфиденциальность</a>
+        <a href="#contact" data-i18n="nav.contact">Контакты</a>
+      </nav>
+    <div class="language-switcher" role="group" aria-label="Выбор языка" data-i18n-aria="language.label"><button type="button" class="language-button" data-language="ru" lang="ru" aria-label="Русский" title="Русский" aria-pressed="true">RU</button><button type="button" class="language-button" data-language="en" lang="en" aria-label="English" title="English" aria-pressed="false">EN</button><button type="button" class="language-button" data-language="uk" lang="uk" aria-label="Українська" title="Українська" aria-pressed="false">UA</button><span class="sr-only" id="language-status" role="status" aria-live="polite" aria-atomic="true"></span></div></div></header>
+
+    <main id="main"><div class="privacy-hero"><h1 data-i18n="policy.title">Конфиденциальность YTSubSearcher</h1>
+    <p class="policy-intro" data-i18n="policy.intro">Обновлено: 3 октября 2026 года. YTSubSearcher ищет публичные видео каналов из подписок выбранного пользователем аккаунта YouTube. Расширение использует YouTube Data API Services.</p>
+    </div><div class="policy-layout"><aside class="policy-toc" aria-labelledby="toc-title">
+      <h2 id="toc-title" data-i18n="toc.title">На этой странице</h2>
+      <ul><li><a href="#access" data-i18n="access.title">Доступ к данным</a></li><li><a href="#sharing" data-i18n="sharing.title">Передача данных</a></li><li><a href="#storage" data-i18n="storage.title">Локальное хранение</a></li><li><a href="#deletion" data-i18n="deletion.title">Удаление и отключение доступа</a></li><li><a href="#google-data" data-i18n="google-data.title">Использование данных Google</a></li><li><a href="#shorts" data-i18n="shorts.title">YouTube и короткие видео</a></li><li><a href="#contact" data-i18n="contact.title">Связь с разработчиком</a></li></ul></aside><div class="policy-content"><section id="access" aria-labelledby="access-title"><h2 id="access-title" data-i18n="access.title">Доступ к данным</h2>
+    <p data-i18n="access.signIn">При нажатии «Войти в Google» Google открывает собственное окно входа и согласия. Расширение получает OAuth-токены, технический идентификатор Google аккаунта, список подписок, название YouTube канала и публичные сведения о видео: идентификатор, название, канал, дату публикации, длительность и адрес миниатюры. Пароль Google расширение не получает.</p>
+    <p data-i18n="access.readOnly">Разрешение YouTube используется только для чтения. Расширение не подписывается на каналы, не публикует видео и не изменяет данные YouTube. Дата поиска и настройки фильтра обрабатываются локально.</p>
+    </section><section id="sharing" aria-labelledby="sharing-title"><h2 id="sharing-title" data-i18n="sharing.title">Передача данных</h2>
+    <p data-i18n="sharing.requests">Запросы авторизации отправляются Google, запросы подписок и сведений о видео — YouTube Data API, миниатюры загружаются с i.ytimg.com. С этими запросами Google получает обычные сетевые сведения, включая IP-адрес. На сервер разработчика данные не передаются. В расширении нет рекламы, аналитики или продажи пользовательских данных.</p>
+    </section><section id="storage" aria-labelledby="storage-title"><h2 id="storage-title" data-i18n="storage.title">Локальное хранение</h2>
+    <p data-i18n="storage.tokens">OAuth-токены и технический идентификатор аккаунта сохраняются в локальном хранилище расширения внутри профиля Firefox, чтобы не входить заново при каждом поиске. Они не синхронизируются расширением между устройствами. Не публикуйте и не передавайте резервную копию своего профиля браузера.</p>
+    <p data-i18n="storage.cache">Кэш метаданных каналов, настройки поиска и результаты сохраняются локально. Срок актуальности кэша — 6 часов с завершения сканирования канала; результаты текущего поиска сохраняются до 6 часов с его завершения или последнего получения результатов. Просроченные записи удаляются при запуске расширения, перед поиском и примерно раз в минуту, пока Firefox работает. Если Firefox закрыт или устройство спит, удаление выполняется после возобновления работы. Изменение фильтра не продлевает хранение прежних результатов.</p>
+    </section><section id="deletion" aria-labelledby="deletion-title"><h2 id="deletion-title" data-i18n="deletion.title">Удаление и отключение доступа</h2>
+    <p data-i18n="deletion.buttons">«Очистить» очищает дату и результаты, «Удалить кэш» удаляет локальный кэш и результаты без выхода из Google. «Выйти» удаляет локальные токены, идентификатор аккаунта, кэш, настройки и результаты. Эти действия не удаляют подписки или видео на YouTube.</p>
+    <p><span data-i18n="deletion.revokeBefore">Чтобы отозвать разрешение Google, удалите доступ приложения в </span><a href="https://myaccount.google.com/connections" target="_blank" rel="noopener noreferrer" data-i18n="deletion.connections">настройках подключений Google аккаунта</a><span data-i18n="deletion.revokeAfter">. После этого может потребоваться повторный вход. Удаление расширения удаляет его локальное хранилище.</span></p>
+    </section><section id="google-data" aria-labelledby="google-data-title"><h2 id="google-data-title" data-i18n="google-data.title">Использование данных Google</h2>
+    <p data-i18n="google-data.use">Использование и передача информации, полученной из Google APIs, ограничены поиском видео из подписок и соответствуют Google API Services User Data Policy, включая требования Limited Use. Данные не используются для рекламы, оценки кредитоспособности или обучения универсальных моделей искусственного интеллекта.</p>
+    </section><section id="shorts" aria-labelledby="shorts-title"><h2 id="shorts-title" data-i18n="shorts.title">YouTube и короткие видео</h2>
+    <p data-i18n="shorts.format">Источник видео и метаданных — YouTube. Группа «Возможные Shorts» означает ролики продолжительностью не более 3 минут, а не подтверждённый формат Shorts. Расширение не загружает страницы YouTube для автоматического определения формата и не встраивает видеоплеер.</p>
+    <p><span data-i18n="shorts.termsBefore">Используя функции YouTube в расширении, вы также соглашаетесь с </span><a href="https://www.youtube.com/t/terms" target="_blank" rel="noopener noreferrer" data-i18n="shorts.terms">Условиями использования YouTube</a><span data-i18n="shorts.googleBefore">. Сведения о работе Google с данными доступны в </span><a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" data-i18n="shorts.google">Политике конфиденциальности Google</a>.</p>
+    </section><section id="contact" aria-labelledby="contact-title"><h2 id="contact-title" data-i18n="contact.title">Связь с разработчиком</h2>
+    <p id="developer-contact"><a href="https://github.com/Suprastin0311">Suprastin0311</a><span data-i18n="contact.details">. Вопросы и запросы на удаление данных: dd.nikolaenko@gmail.com</span></p>
+  </section></div></div></main><footer>
+      <span data-i18n="footer.description">YTSubSearcher · Независимое расширение для Firefox</span>
+      <div class="footer-links">
+        <a href="privacy.html" data-i18n="footer.privacy">Конфиденциальность</a>
+        <a href="https://www.youtube.com/t/terms" target="_blank" rel="noopener noreferrer" data-i18n="footer.terms">Условия YouTube</a>
+        <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" data-i18n="footer.google">Конфиденциальность Google</a>
+      </div>
+    </footer>
+  </div><script>
+    (() => {
+      "use strict";
+      const translations = {
+        "ru": {
+                "skip": "Перейти к содержимому",
+                "nav.how": "Как пользоваться",
+                "nav.privacy": "Конфиденциальность",
+                "nav.contact": "Контакты",
+                "footer.description": "YTSubSearcher · Независимое расширение для Firefox",
+                "footer.privacy": "Конфиденциальность",
+                "footer.terms": "Условия YouTube",
+                "footer.google": "Конфиденциальность Google",
+                "brand.label": "YTSubSearcher, главная",
+                "nav.label": "Навигация",
+                "language.label": "Выбор языка",
+                "language.current": "Выбран русский язык",
+                "page.title": "Конфиденциальность — YTSubSearcher",
+                "page.description": "Политика конфиденциальности YTSubSearcher: доступ к данным Google и YouTube, локальное хранение, удаление данных и связь с разработчиком.",
+                "policy.title": "Конфиденциальность YTSubSearcher",
+                "policy.intro": "Обновлено: 3 октября 2026 года. YTSubSearcher ищет публичные видео каналов из подписок выбранного пользователем аккаунта YouTube. Расширение использует YouTube Data API Services.",
+                "toc.title": "Навигация",
+                "access.title": "Доступ к данным",
+                "sharing.title": "Передача данных",
+                "storage.title": "Локальное хранение",
+                "deletion.title": "Удаление и отключение доступа",
+                "google-data.title": "Использование данных Google",
+                "shorts.title": "YouTube и короткие видео",
+                "contact.title": "Связь с разработчиком",
+                "access.signIn": "При нажатии «Войти в Google» Google открывает собственное окно входа и согласия. Расширение получает OAuth-токены, технический идентификатор Google аккаунта, список подписок, название YouTube канала и публичные сведения о видео: идентификатор, название, канал, дату публикации, длительность и адрес миниатюры. Пароль Google расширение не получает.",
+                "access.readOnly": "Разрешение YouTube используется только для чтения. Расширение не подписывается на каналы, не публикует видео и не изменяет данные YouTube. Дата поиска и настройки фильтра обрабатываются локально.",
+                "sharing.requests": "Запросы авторизации отправляются Google, запросы подписок и сведений о видео — YouTube Data API, миниатюры загружаются с i.ytimg.com. С этими запросами Google получает обычные сетевые сведения, включая IP-адрес. На сервер разработчика данные не передаются. В расширении нет рекламы, аналитики или продажи пользовательских данных.",
+                "storage.tokens": "OAuth-токены и технический идентификатор аккаунта сохраняются в локальном хранилище расширения внутри профиля Firefox, чтобы не входить заново при каждом поиске. Они не синхронизируются расширением между устройствами. Не публикуйте и не передавайте резервную копию своего профиля браузера.",
+                "storage.cache": "Кэш метаданных каналов, настройки поиска и результаты сохраняются локально. Срок актуальности кэша — 6 часов с завершения сканирования канала; результаты текущего поиска сохраняются до 6 часов с его завершения или последнего получения результатов. Просроченные записи удаляются при запуске расширения, перед поиском и примерно раз в минуту, пока Firefox работает. Если Firefox закрыт или устройство спит, удаление выполняется после возобновления работы. Изменение фильтра не продлевает хранение прежних результатов.",
+                "deletion.buttons": "«Очистить» очищает дату и результаты, «Удалить кэш» удаляет локальный кэш и результаты без выхода из Google. «Выйти» удаляет локальные токены, идентификатор аккаунта, кэш, настройки и результаты. Эти действия не удаляют подписки или видео на YouTube.",
+                "deletion.revokeBefore": "Чтобы отозвать разрешение Google, удалите доступ приложения в ",
+                "deletion.connections": "настройках подключений Google аккаунта",
+                "deletion.revokeAfter": ". После этого может потребоваться повторный вход. Удаление расширения удаляет его локальное хранилище.",
+                "google-data.use": "Использование и передача информации, полученной из Google APIs, ограничены поиском видео из подписок и соответствуют Google API Services User Data Policy, включая требования Limited Use. Данные не используются для рекламы, оценки кредитоспособности или обучения универсальных моделей искусственного интеллекта.",
+                "shorts.format": "Источник видео и метаданных — YouTube. Группа «Возможные Shorts» означает ролики продолжительностью не более 3 минут, а не подтверждённый формат Shorts. Расширение не загружает страницы YouTube для автоматического определения формата и не встраивает видеоплеер.",
+                "shorts.termsBefore": "Используя функции YouTube в расширении, вы также соглашаетесь с ",
+                "shorts.terms": "Условиями использования YouTube",
+                "shorts.googleBefore": ". Сведения о работе Google с данными доступны в ",
+                "shorts.google": "Политике конфиденциальности Google",
+                "contact.details": ". Вопросы и запросы на удаление данных: dd.nikolaenko@gmail.com"
+        },
+        "en": {
+                "skip": "Skip to content",
+                "nav.how": "How to use",
+                "nav.privacy": "Privacy",
+                "nav.contact": "Contact",
+                "footer.description": "YTSubSearcher · An independent Firefox extension",
+                "footer.privacy": "Privacy",
+                "footer.terms": "YouTube Terms of Service",
+                "footer.google": "Google Privacy Policy",
+                "brand.label": "YTSubSearcher, home",
+                "nav.label": "Navigation",
+                "language.label": "Language selection",
+                "language.current": "English selected",
+                "page.title": "Privacy — YTSubSearcher",
+                "page.description": "YTSubSearcher privacy policy: access to Google and YouTube data, local storage, data deletion and developer contact information.",
+                "policy.title": "YTSubSearcher privacy policy",
+                "policy.intro": "Updated: 3 October 2026. YTSubSearcher finds public videos from channels in the subscriptions of the YouTube account selected by the user. The extension uses YouTube Data API Services.",
+                "toc.title": "On this page",
+                "access.title": "Access to data",
+                "sharing.title": "Data sharing",
+                "storage.title": "Local storage",
+                "deletion.title": "Deleting data and revoking access",
+                "google-data.title": "Use of Google data",
+                "shorts.title": "YouTube and short videos",
+                "contact.title": "Contact the developer",
+                "access.signIn": "When you click “Sign in with Google”, Google opens its own sign-in and consent window. The extension receives OAuth tokens, a technical Google account identifier, the list of subscriptions, the YouTube channel name and public video information: ID, title, channel, publication date, duration and thumbnail URL. The extension does not receive your Google password.",
+                "access.readOnly": "YouTube permission is used only for reading data. The extension does not subscribe to channels, publish videos or modify YouTube data. The search date and filter settings are processed locally.",
+                "sharing.requests": "Authorization requests are sent to Google, requests for subscriptions and video information are sent to the YouTube Data API, and thumbnails are loaded from i.ytimg.com. With these requests, Google receives standard network information, including your IP address. Data is not sent to the developer’s server. The extension contains no advertising or analytics, and user data is not sold.",
+                "storage.tokens": "OAuth tokens and the technical account identifier are saved in the extension’s local storage within your Firefox profile, so you do not have to sign in again for every search. The extension does not synchronize them between devices. Do not publish or share a backup of your browser profile.",
+                "storage.cache": "Cached channel metadata, search settings and results are stored locally. The cache remains current for 6 hours after a channel scan finishes; current search results are retained for up to 6 hours after the search finishes or the last results are received. Expired records are deleted when the extension starts, before a search and approximately once a minute while Firefox is running. If Firefox is closed or the device is asleep, deletion takes place when operation resumes. Changing the filter does not extend the retention of earlier results.",
+                "deletion.buttons": "“Clear” clears the date and results. “Clear cache” deletes the local cache and results without signing out of Google. “Sign out” deletes local tokens, the account identifier, the cache, settings and results. These actions do not delete subscriptions or videos on YouTube.",
+                "deletion.revokeBefore": "To revoke access granted through Google, remove the app’s permissions in your ",
+                "deletion.connections": "Google account’s connection settings",
+                "deletion.revokeAfter": ". You may need to sign in again afterwards. Uninstalling the extension deletes its local storage.",
+                "google-data.use": "Use and transfer of information obtained from Google APIs are limited to finding videos from subscriptions and comply with the Google API Services User Data Policy, including its Limited Use requirements. Data is not used for advertising, assessing creditworthiness or training general-purpose artificial intelligence models.",
+                "shorts.format": "YouTube is the source of videos and metadata. The “Possible Shorts” group means videos lasting no more than 3 minutes; it does not confirm that they are Shorts. The extension does not fetch YouTube pages to determine the format automatically and does not embed a video player.",
+                "shorts.termsBefore": "By using YouTube features in the extension, you also agree to the ",
+                "shorts.terms": "YouTube Terms of Service",
+                "shorts.googleBefore": ". Information about how Google handles data is available in the ",
+                "shorts.google": "Google Privacy Policy",
+                "contact.details": ". Questions and data deletion requests: dd.nikolaenko@gmail.com"
+        },
+        "uk": {
+                "skip": "Перейти до вмісту",
+                "nav.how": "Як користуватися",
+                "nav.privacy": "Конфіденційність",
+                "nav.contact": "Контакти",
+                "footer.description": "YTSubSearcher · Незалежне розширення для Firefox",
+                "footer.privacy": "Конфіденційність",
+                "footer.terms": "Умови використання YouTube",
+                "footer.google": "Політика конфіденційності Google",
+                "brand.label": "YTSubSearcher, головна",
+                "nav.label": "Навігація",
+                "language.label": "Вибір мови",
+                "language.current": "Вибрано українську мову",
+                "page.title": "Конфіденційність — YTSubSearcher",
+                "page.description": "Політика конфіденційності YTSubSearcher: доступ до даних Google та YouTube, локальне зберігання, видалення даних і зв’язок із розробником.",
+                "policy.title": "Конфіденційність YTSubSearcher",
+                "policy.intro": "Оновлено: 3 жовтня 2026 року. YTSubSearcher шукає публічні відео каналів із підписок вибраного користувачем облікового запису YouTube. Розширення використовує YouTube Data API Services.",
+                "toc.title": "На цій сторінці",
+                "access.title": "Доступ до даних",
+                "sharing.title": "Передавання даних",
+                "storage.title": "Локальне зберігання",
+                "deletion.title": "Видалення даних і відкликання доступу",
+                "google-data.title": "Використання даних Google",
+                "shorts.title": "YouTube та короткі відео",
+                "contact.title": "Зв’язок із розробником",
+                "access.signIn": "Після натискання «Увійти через Google» Google відкриває власне вікно входу та надання згоди. Розширення отримує OAuth-токени, технічний ідентифікатор облікового запису Google, список підписок, назву каналу YouTube та публічні відомості про відео: ідентифікатор, назву, канал, дату публікації, тривалість і адресу мініатюри. Розширення не отримує пароль Google.",
+                "access.readOnly": "Дозвіл YouTube використовується лише для читання даних. Розширення не підписується на канали, не публікує відео та не змінює дані YouTube. Дата пошуку й налаштування фільтра обробляються локально.",
+                "sharing.requests": "Запити на авторизацію надсилаються Google, запити на отримання підписок і відомостей про відео — до YouTube Data API, а мініатюри завантажуються з i.ytimg.com. Із цими запитами Google отримує звичайні мережеві відомості, зокрема IP-адресу. Дані не передаються на сервер розробника. У розширенні немає реклами, аналітики чи продажу даних користувачів.",
+                "storage.tokens": "OAuth-токени й технічний ідентифікатор облікового запису зберігаються в локальному сховищі розширення всередині профілю Firefox, щоб не входити повторно під час кожного пошуку. Розширення не синхронізує їх між пристроями. Не публікуйте й не передавайте резервну копію свого профілю браузера.",
+                "storage.cache": "Кеш метаданих каналів, налаштування пошуку й результати зберігаються локально. Строк актуальності кешу — 6 годин після завершення сканування каналу; результати поточного пошуку зберігаються до 6 годин із моменту його завершення або останнього отримання результатів. Записи, строк зберігання яких сплив, видаляються під час запуску розширення, перед пошуком і приблизно раз на хвилину, поки Firefox працює. Якщо Firefox закритий або пристрій перебуває в режимі сну, видалення виконується після відновлення роботи. Зміна фільтра не подовжує строк зберігання попередніх результатів.",
+                "deletion.buttons": "«Очистити» очищає дату й результати, «Видалити кеш» видаляє локальний кеш і результати без виходу з Google. «Вийти» видаляє локальні токени, ідентифікатор облікового запису, кеш, налаштування й результати. Ці дії не видаляють підписки чи відео на YouTube.",
+                "deletion.revokeBefore": "Щоб відкликати дозвіл Google, видаліть доступ застосунку в ",
+                "deletion.connections": "налаштуваннях підключень облікового запису Google",
+                "deletion.revokeAfter": ". Після цього може знадобитися повторний вхід. Видалення розширення видаляє його локальне сховище.",
+                "google-data.use": "Використання й передавання інформації, отриманої з Google APIs, обмежуються пошуком відео з підписок і відповідають Google API Services User Data Policy, зокрема вимогам Limited Use. Дані не використовуються для реклами, оцінювання кредитоспроможності чи навчання моделей штучного інтелекту загального призначення.",
+                "shorts.format": "Джерело відео й метаданих — YouTube. Група «Можливі Shorts» означає відео тривалістю не більше ніж 3 хвилини, а не підтверджений формат Shorts. Розширення не завантажує сторінки YouTube для автоматичного визначення формату й не вбудовує відеоплеєр.",
+                "shorts.termsBefore": "Користуючись функціями YouTube у розширенні, ви також погоджуєтеся з ",
+                "shorts.terms": "Умовами використання YouTube",
+                "shorts.googleBefore": ". Відомості про те, як Google працює з даними, доступні в ",
+                "shorts.google": "Політиці конфіденційності Google",
+                "contact.details": ". Запитання й запити на видалення даних: dd.nikolaenko@gmail.com"
+        }
+};
+      const storageKey = "ytss-homepage-language";
+      const buttons = [...document.querySelectorAll("[data-language]")];
+      const hasLanguage = (language) => Object.hasOwn(translations, language);
+
+      function setLanguage(language, remember = false) {
+        if (!hasLanguage(language)) return;
+        const strings = translations[language];
+        document.documentElement.lang = language;
+        document.querySelectorAll("[data-i18n]").forEach((element) => {
+          element.textContent = strings[element.dataset.i18n];
+        });
+        document.querySelectorAll("[data-i18n-aria]").forEach((element) => {
+          element.setAttribute("aria-label", strings[element.dataset.i18nAria]);
+        });
+        document.querySelectorAll("[data-i18n-content]").forEach((element) => {
+          element.setAttribute("content", strings[element.dataset.i18nContent]);
+        });
+        buttons.forEach((button) => {
+          button.setAttribute("aria-pressed", String(button.dataset.language === language));
+        });
+        document.getElementById("language-status").textContent = strings["language.current"];
+        if (remember) {
+          try { localStorage.setItem(storageKey, language); } catch { /* Switching still works when storage is unavailable. */ }
+        }
+      }
+
+      let initialLanguage = "ru";
+      try {
+        const savedLanguage = localStorage.getItem(storageKey);
+        if (hasLanguage(savedLanguage)) initialLanguage = savedLanguage;
+      } catch { /* Keep the Russian default. */ }
+      const requestedLanguage = new URLSearchParams(location.search).get("lang");
+      if (hasLanguage(requestedLanguage)) initialLanguage = requestedLanguage;
+      setLanguage(initialLanguage);
+      buttons.forEach((button) => {
+        button.addEventListener("click", () => setLanguage(button.dataset.language, true));
+      });
+    })();
+</script></body></html>
